@@ -1,9 +1,9 @@
-#splunkUFInstall
+# splunkUFInstall
 
+## Description:
 I have not tested this extensively yet but the attached PowerShell script should check for a current Splunk installation then either install or upgrade the Splunk UF version.  If the deployment server is set it will also set the deployment conf file. 
  
-Usage:
-
+## Usage:
 Option | Description | Required | Example
 -------|-------------|----------|---------
 -version | Used to set the msi file to upgrade too | True | .\splunk_udpate.ps1 -version "splunkversion.msi"
