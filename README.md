@@ -6,7 +6,7 @@ Usage:
 
 Option | Description | Required | Example
 -------|-------------|----------|---------
-- version | Used to set the msi file to upgrade too | True | .\splunk_udpate.ps1 -version "splunkversion.msi"
+-version | Used to set the msi file to upgrade too | True | .\splunk_udpate.ps1 -version "splunkversion.msi"
 -deployment_server | Sets the deployment server in system/local | False | .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089"
 -install_user | New install username* (ignored during upgrade) | False | .\splunk_udpate.ps1 -version "splunkversion.msi" -install_user “admin”
 -install_pwd | New install password* (ignored during upgrade) | False | .\splunk_udpate.ps1 -version "splunkversion.msi" -install_user “splunk” -install_pwd “mypassword123”
