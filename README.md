@@ -1,10 +1,10 @@
 # splunkUFInstall
 
 ## Description:
-    I have not tested this extensively yet but the attached PowerShell script should check for a current Splunk installation then either install or upgrade the Splunk UF version.  If the deployment server is set it will also set the deployment conf file. 
+I have not tested this extensively yet but the attached PowerShell script should check for a current Splunk installation then either install or upgrade the Splunk UF version.  If the deployment server is set it will also set the deployment conf file. 
 
 ## Requirements:
-    PS1 script and splunk UF msi file must be in same directory.  (Recommend putting in "c:\temp")
+PS1 script and splunk UF msi file must be in same directory.  (Recommend putting in "c:\temp")
 
 ## Usage:
 Option   | Description        | Required | Example
