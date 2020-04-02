@@ -76,7 +76,7 @@ function install-deploymentserver {
         "export = system"
     )
     # Deploymentclient.conf config
-    $deployment_conf = @(
+    $deploy_conf = @(
         "[deployment-client]"
         "# Set the phoneHome at the end of the PS engagement"
         "# 10 minutes"
@@ -84,17 +84,17 @@ function install-deploymentserver {
         ""
         "[target-broker:deploymentServer]"
         "# Change the targetUri"
-        "targetUri=$deployment_server"
+        "targetUri = $deployment_server"
     )
 
     write-host "Creating Deployment app in $deploy_app"
-    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file -force
-    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $deployment_conf -force
-    new-item -path "$install_dir\etc\apps\$deploy_app\metadata\" -name $app_file -force
+    $null = new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file -force
+    $null = new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $deploy_file -force
+    $null = new-item -path "$install_dir\etc\apps\$deploy_app\metadata\" -name $meta_file -force
 
     write-host "Writing configs to $deploy_app"
-    $app_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$app_file" -value $app_conf
-    $deployment_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_file" -value $deploy_conf
+    set-content -path "$install_dir\etc\apps\$deploy_app\local\$app_file" -value $app_conf
+    set-content -path "$install_dir\etc\apps\$deploy_app\local\$deploy_file" -value $deploy_conf
     set-content -path "$install_dir\etc\apps\$deploy_app\metadata\$meta_file" -value $meta_conf
 }
 
