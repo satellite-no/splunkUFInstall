@@ -5,7 +5,7 @@
 #
 # Example: .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089"
 
-param ([Parameter(Mandatory)]$version, $deploy_app="all_uf_deploymentclient", $deployment_server, $install_pwd,$install_user="admin")
+param ([Parameter(Mandatory)]$version, $deploy_app="all_uf_deploymentclient", $deployment_server, $install_pwd="password123!", $install_user="admin")
 $install_dir = "C:\Program Files\SplunkUniversalForwarder"
 $temp_dir = "C:\temp\"
 $install_log = "splunk_install.log"
@@ -41,16 +41,6 @@ function upgrade-splunk {
     start-process msiexec.exe -Wait -argumentList $arg_list
 }
 
-function install-userseed {
-    $seed_file = "user-seed.conf"
-
-    write-host "Creating $install_dir\etc\system\local\$seed_file ..."
-    $seed_conf = "[user_info]"
-    $seed_conf += "`nUSERNAME = admin"
-    $seed_conf += "`nPASSWORD = password123!"
-
-    $seed_conf | out-file "$install_dir\etc\system\local\$seed_file"
-}
 function install-deploymentserver {
     # Set variables and configs 
     $deploy_file = "deploymentclient.conf"
