@@ -5,7 +5,7 @@
 #
 # Example: .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089"
 
-param ([Parameter(Mandatory)]$version, $deploy_app, $deployment_server, $install_pwd,$install_user="admin")
+param ([Parameter(Mandatory)]$version, $deploy_app="all_uf_deploymentclient", $deployment_server, $install_pwd,$install_user="admin")
 $install_dir = "C:\Program Files\SplunkUniversalForwarder"
 $temp_dir = "C:\temp\"
 $install_log = "splunk_install.log"
@@ -87,15 +87,17 @@ function install-deploymentserver {
         "targetUri = $deployment_server"
     )
 
-    write-host "Creating Deployment app in $deploy_app"
+    write-host "Creating Deployment app in $deploy_app..."
     $null = new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file -force
     $null = new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $deploy_file -force
     $null = new-item -path "$install_dir\etc\apps\$deploy_app\metadata\" -name $meta_file -force
 
-    write-host "Writing configs to $deploy_app"
+    write-host "Writing configs to $deploy_app..."
     set-content -path "$install_dir\etc\apps\$deploy_app\local\$app_file" -value $app_conf
     set-content -path "$install_dir\etc\apps\$deploy_app\local\$deploy_file" -value $deploy_conf
     set-content -path "$install_dir\etc\apps\$deploy_app\metadata\$meta_file" -value $meta_conf
+
+    write-host "Deployment app $deploy_app created with value $deployment_server..."
 }
 
 if (test-path $install_dir) {
