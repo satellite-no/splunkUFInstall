@@ -5,7 +5,7 @@
 #
 # Example: .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089"
 
-param ([Parameter(Mandatory)]$version, $deployment_server, $install_pwd,$install_user="admin")
+param ([Parameter(Mandatory)]$version, $deploy_app, $deployment_server, $install_pwd,$install_user="admin")
 $install_dir = "C:\Program Files\SplunkUniversalForwarder"
 $temp_dir = "C:\temp\"
 $install_log = "splunk_install.log"
@@ -53,6 +53,25 @@ function install-userseed {
 }
 function install-deploymentserver {
     $deploy_file = "deploymentclient.conf"
+    $app_file = "app.conf"
+    $meta_file = "local.meta"
+    
+    $app_conf = @(
+        "[install]"
+        "state = enabled"
+        ""
+        "[package]"
+        "check_for_updates = false"
+        ""
+        "[ui]"
+        "is_visible = false"
+        "is_manageable = false"
+    )
+
+    $app_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_app"
+
+    write-host "Creating Deployment app in $deploy_app"
+    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file
 
     write-host "Creating $install_dir\etc\system\local\$deploy_file ..."
     $deployment_conf = "[deployment-client]"
@@ -64,7 +83,7 @@ function install-deploymentserver {
     $deployment_conf += "`n# Change the targetUri"
     $deployment_conf += "`ntargetUri=$deployment_server"
 
-    $deployment_conf | out-file "$install_dir\etc\system\local\$deploy_file"
+    $deployment_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_file"
 }
 
 if (test-path $install_dir) {
