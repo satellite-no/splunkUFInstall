@@ -52,10 +52,12 @@ function install-userseed {
     $seed_conf | out-file "$install_dir\etc\system\local\$seed_file"
 }
 function install-deploymentserver {
+    # Set variables and configs 
     $deploy_file = "deploymentclient.conf"
     $app_file = "app.conf"
     $meta_file = "local.meta"
     
+    # Default app.conf config
     $app_conf = @(
         "[install]"
         "state = enabled"
@@ -67,23 +69,32 @@ function install-deploymentserver {
         "is_visible = false"
         "is_manageable = false"
     )
-
-    $app_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_app"
+    # Default meta.local
+    $meta_conf = @(
+        "[]"
+        "access = read : [ * ], write : [ admin ]"
+        "export = system"
+    )
+    # Deploymentclient.conf config
+    $deployment_conf = @(
+        "[deployment-client]"
+        "# Set the phoneHome at the end of the PS engagement"
+        "# 10 minutes"
+        "# phoneHomeIntervalInSecs = 600"
+        ""
+        "[target-broker:deploymentServer]"
+        "# Change the targetUri"
+        "targetUri=$deployment_server"
+    )
 
     write-host "Creating Deployment app in $deploy_app"
-    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file
+    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $app_file -force
+    new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $deployment_conf -force
+    new-item -path "$install_dir\etc\apps\$deploy_app\metadata\" -name $app_file -force
 
-    write-host "Creating $install_dir\etc\system\local\$deploy_file ..."
-    $deployment_conf = "[deployment-client]"
-    $deployment_conf += "`n# Set the phoneHome at the end of the PS engagement"
-    $deployment_conf += "`n# 10 minutes"
-    $deployment_conf += "`n# phoneHomeIntervalInSecs = 600"
-    $deployment_conf += "`n"
-    $deployment_conf += "`n[target-broker:deploymentServer]"
-    $deployment_conf += "`n# Change the targetUri"
-    $deployment_conf += "`ntargetUri=$deployment_server"
-
-    $deployment_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_file"
+    $app_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$app_file" -value $app_conf
+    $deployment_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_file" -value $deploy_conf
+    set-content -path "$install_dir\etc\apps\$deploy_app\metadata\$meta_file" -value $meta_conf
 }
 
 if (test-path $install_dir) {
