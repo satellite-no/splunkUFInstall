@@ -92,6 +92,7 @@ function install-deploymentserver {
     new-item -path "$install_dir\etc\apps\$deploy_app\local\" -name $deployment_conf -force
     new-item -path "$install_dir\etc\apps\$deploy_app\metadata\" -name $app_file -force
 
+    write-host "Writing configs to $deploy_app"
     $app_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$app_file" -value $app_conf
     $deployment_conf | out-file "$install_dir\etc\apps\$deploy_app\local\$deploy_file" -value $deploy_conf
     set-content -path "$install_dir\etc\apps\$deploy_app\metadata\$meta_file" -value $meta_conf
