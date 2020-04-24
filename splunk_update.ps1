@@ -3,9 +3,9 @@
 # By: Sean Elliott
 # Date: 04/01/2020
 #
-# Example: .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089"
+# Example: .\splunk_udpate.ps1 -version "splunkversion.msi" -deployment_server "123.456.789:8089 -install_user=admin -install_pwd=junk"
 
-param ([Parameter(Mandatory)]$version, $deploy_app="all_uf_deploymentclient", $deployment_server, $install_pwd="password123!", $install_user="admin")
+param ([Parameter(Mandatory)]$version, $deploy_app="D99_all_deploymentclient", $deployment_server, $install_pwd="password123!", $install_user="admin")
 $install_dir = "C:\Program Files\SplunkUniversalForwarder"
 $temp_dir = "C:\temp\"
 $install_log = "splunk_install.log"
